@@ -1,0 +1,107 @@
+In case SD card needs to be reimaged:
+
+Configuring GPIO pins:
+	Follow instructions on "pypi.org/project/Jetson.GPIO/" to add permissions (you can use JetsonHacks or Paul McWhorter as resources as well).
+	Try the following lines of code in a new terminal:
+		"sudo groupadd -f -r gpio".
+		"sudo usermod -a -G gpio pierremourad" (we used "pierremourad here because it was the username, if your username is different, use your username).
+		"sudo udevadm control --reload-rules && sudo udevadm trigger".
+	Open a new terminal and execute the command "sudo /opt/nvidia/jetson-io/jetson-io.py".
+	Then select "configure Jetson 40pin Header".
+	Then select "configure header pins manually".
+	Then select "spi1" (contains GPIO pins 19, 21, 23, 24, 26).
+	Then select "back".
+	Then select "save pin changes".
+	Then select "save and reboot to reconfigure pins".
+	The press any key to reboot as the terminal prompts you.
+
+Install Clang++ compiler:
+	In a new terminal, type in "sudo apt-get update && sudo apt-get upgrade".
+	Then execute the command "sudo apt install clang" and say "y" if it prompts you with something like "do you want to make the changes".
+
+Install Remote Desktop (XRDP):
+	In a new terminal, type in "sudo apt-get update". Type "y" and press the "Enter" key when it asks you if you want to update.
+	Then type, "sudo apt-get install xrdp". Type "y" and press the "Enter" key when it asks you if you want to install the package.
+	Then type, "sudo apt-get install xfce4". Type "y" and press the "Enter" key when it asks you if you want to install the package.
+	Then type, "sudo sed -i.bal '/fi/a #xrdp multiple users configuration \n' /etc/xrdp/startwm.sh" and execute the command.
+	Then type, "sudo adduser xrdp ssl-cert".
+	Then type, "sudo apt-get install ufw". Type "y" and press the "Enter" key when it asks you if you want to install the package.
+	Then type, "sudo ufw allow 3389/tcp".
+	Then type, "sudo /etc/init.d/xrdp restart".
+
+Install Visual Studio:
+	In a new terminal, type in "sudo apt-get update". Type "y" and press the "Enter" key when it asks you if you want to update. 
+	Then type "cd Downloads".
+	Then type "sudo apt-get install curl", type "y" and press the "Enter" key if it asks it prompts you for a response.
+	Then type "curl -L https://github.com/toolboc/vscode/releases/download/1.32.3/code-oss_1.32.3-arm64.deb -o code-oss_1.32.3-arm64.deb".
+	Then type "sudo dpkg -i code-oss_1.32.3-arm64.deb".
+	Visual studio should now launch when you type in "code-oss" in the terminal. You can also open Visual Studeo from the GUI. If you want you can "lock" it to the launcher for instant GUI access.
+
+Configure Visual Studio:
+	Go to system settings and click on "appearance".
+	Then click on "behavior" and make sure the options "In the window's title bar" and "always displayed" are checked.
+	Open visual studio.
+	Click on the "extensions icon" (alternatively press CTRL+SHIFT+X on your keyboard).
+	In the "EXTENSIONS: MARKETPLACE" search box type "Python".
+	Click on "Python" (it should say it's made by Microsoft and can be used for IntelliSense (Pylance), Linting, Debugging).
+	Click on the "Install" button.
+	After installing, close the tab called "Extension: Python".
+	Click on the "Explorer" icon (it should be the top icon).
+	Press "CTRL+SHIFT+P" on the keyboard.
+	On the line that shows up (it should be like a search box with ">" on it), type "select interpreter" and then click on the option "Python: Select Interpreter" when it pops up.
+	It will now give you the option of selecting a Python version. Click on the Python 3.6.9 64-bit version.
+	You have now successfully configured Visual Studio! To open a file or create a new file you may click on the button labeled "File" above and go from there.
+	(It is recommended you make a folder where you can save the code you write to - I chose Desktop but it can be anywhere. You can open up the folder by clicking on "File" at the toolbar above and then clicking "Open Folder". Go to the location where you have your folder located and click on the folder and then click "OK".)
+
+Installing OpenCV:	
+	Open a terminal and execute the command "sudo apt-get install python3-opencv".
+	When it asks if you want to continue, type "y" and press enter.
+	That should install OpenCV.
+	
+For stepper motor software do the following:
+	For venv, install python3.10.9 from the source (python official website). Dowload the gzipped source tarball (link: https://www.python.org/downloads/release/python-3109/ ).
+	Instruction for what you have to type into the terminal are given here (link: https://computingforgeeks.com/how-to-install-python-on-ubuntu-linux-system/?expand_article=1 ).
+	Then install pip onto your system by typing "sudo apt install python3-pip" into another terminal.
+
+For Facepose Estimation software do the folliwing:
+	For the error that says something like "bash: ./build_opencv.sh: permission denied", open up a terminal in the installation folder from the facepose-estimation folder. Then execute the command "chmod u+x build_opencv.sh". You should now be able to run the script of "build_opencv.sh" by typing "./build_opencv.sh". (do the same for any similar errors)
+	(For -lgif error) type in a new terminal "sudo apt-get update -y" then "sudo apt-get install -y libgif-dev".
+	Then for the "ModuleNotFoundError: No module named 'flask'" error, type in a new terminal "pip3 install flask".
+	Then for the "ModuleNotFoundError: No module named 'adafruit_servokit'" error, type in a new terminal "python3 -m pip install adafruit-circuitpython-servokit".
+	Then for the "No matching distribution found for Adafruit-Blinka>=7.0.0 (from adafruit-circuitpython-servokit)" error, type the following commands in the same terminal:
+		"python3 -m pip install -U pip"
+		"python3 -m pip install --upgrade setuptools"
+		"sudo apt install python3-testresources -y"
+		"python3 -m pip install --upgrade setuptools"
+		"python3 -m pip install ez_setup"
+		"python3 -m pip install adafruit-circuitpython-servokit".
+	Then for the "[ WARN:0] global /tmp/build_opencv/opencv/modules/videoio/src/cap_gstreamer.cpp (713) open OpenCV | GStreamer warning: Error opening bin: could not parse caps "video/x-raw, width=48    0, height=680, format=BGRx" " error, do the following:
+		Open the "webcam_head_pose.cpp" file with a text editor.
+		Go to line 142, column 163.
+		Remove the extra spaces between "48" and "0" of the number "48   0". It is supposed to be "480" not "48   0" (it's not supposed to have the extra spaces in between).
+		Save the file.
+		Go back to the Facepose-Estimation terminal, recompile the code by typing in "./build.sh". 
+		Launch the program!
+	Then for the error that says something like "could not access file shape_predictor_68_face_landmarks.dat", do the following:
+		Open your internet browser and go to the link, "http://dlib.net/files/".
+		From there click on the file/link labeled "shape_predictor_68_face_landmarks.dat.bz2". That should download that file.
+		Go to the location where the file has downloaded and extract its contents. That should leave you with a file called "shape_predictor_68_face_landmarks.dat".
+		Copy that file and paste it into the "Facepose-Estimation" folder.
+		In the Facepose-Estimation terminal, recompile the code by typing in "./build.sh".
+		Launch the program!
+	
+	For warnings/errors like "webcam_head_pose.cpp:344:50: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+                        gizmoCommandSocket->send("0", 1);", do the following:
+		Open the webcam_head_pose.cpp file and go to the line and column where the error is located. 
+		Type in "(char*)" before the term ""0"".
+		Save the file.
+		In the Facepose-Estimation terminal, recompile the code by typing in "./build.sh".
+		Launch the program!
+
+	For warnings/errors like "./TcpSocket.h:4:17: warning: using directive refers to implicitly-defined namespace 'std'", do the following:
+		Open the file called "TcpSocket.h" and go to line 4.
+		Move the contents of line 4 (aka the code that says "using namespace std;") below all the lines of code that say "#include <code here...>".
+		Save the file.
+		In the Facepose-Estimation terminal, recompile the code by typing in "./build.sh".
+		Launch the program!
+
