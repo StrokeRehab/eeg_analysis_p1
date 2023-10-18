@@ -1,4 +1,4 @@
-# AdafruitDriver 
+# Gizmo_Adafruit
 Model: Adafruit ESP32-S2 Feather 
 Mounted on the Gizmo, responsible for controlling left and right wheel motors. 
 
