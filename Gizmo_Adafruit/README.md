@@ -12,9 +12,7 @@ https://learn.adafruit.com/adafruit-esp32-s2-feather/arduino-ide-setup
 Adafruit pinout diagram: 
 https://learn.adafruit.com/adafruit-esp32-s2-feather/pinouts
 
-## Source
-https://github.com/nBestauros/ESP32StepperController
-(Lightly modded)
+
 
 
 
