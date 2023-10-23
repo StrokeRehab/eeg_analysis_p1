@@ -29,7 +29,7 @@
 #define MIN_ANGLE 0
 #define MAX_ANGLE 180
 
-#define BASE_STATION_AGX_IP "10.18.244.167"
+#define BASE_STATION_AGX_IP "10.18.96.109"
 #define GIZMO_COMMANDER_PORT "26784"
 
 int current_tilt = START_TILT;
