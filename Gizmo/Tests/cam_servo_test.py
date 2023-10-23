@@ -12,7 +12,7 @@ import random
 import traceback
 from adafruit_servokit import ServoKit
 
-wait_time = 0.5
+wait_time = 1
 
 MIN_ANGLE = 0
 MAX_ANGLE = 180
@@ -26,68 +26,17 @@ print_error_count = 0
 pan_error_count = 0
 tilt_error_count = 0
 
-kit = None
+kit = ServoKit(channels=16) 
 
+kit.servo[0].actuation_range = MAX_ANGLE
+kit.servo[1].actuation_range = MAX_ANGLE
 
 def print_new_line(line_count):
     """
     Print new lines in terminal. Used for clearing.
     """
     for i in range(line_count):
-        print()
-
-def init_servo_kit():
-    """
-    Loops through attempts to initialize ServoKit object, while logging failed attempts.
-    Handy ServoKit resource: https://cdn-learn.adafruit.com/downloads/pdf/adafruit-16-channel-servo-driver-with-raspberry-pi.pdf
-
-    If initialization succesful, calls init_servo_config() to handle initial servo configurations.
-    Otherwise terminates script.
-    """
-    global kit
-
-    print("Initializing ServoKit object...")
-
-    init_success = False
-    try:
-        attempt_count = 0
-        while not init_success:
-            attempt_count +=1 
-
-            try:
-                kit = ServoKit(channels=16) 
-                time.sleep(0.05)
-                init_success = True
-
-            except Exception as e:
-                init_success = False
-            
-            if attempt_count % 10 == 0:
-                print(f"{attempt_count}th attempt to initialize ServoKit object.\n")
-
-            else: 
-                print("Failed to initialize ServoKit object. Terminating.")
-                sys.exit(1)
-
-    except KeyboardInterrupt:
-        init_success = False
-        print("\nUser manually interrupted ServoKit init.")
-    
-    print("Successfully initialized ServoKit object.")
-    init_servo_config()
-
-def init_servo_config():
-    """
-    This method sets up initial configurations for the servos.
-    It is called in the init_servo_kit method.
-    """
-    global kit
-
-    if kit is None:
-        init_servo_kit()
-
-    kit.servo[0].actuation_range = MAX_ANGLE
-    kit.servo[1].actuation_range = MAX_ANGLE
+        print()    
 
 def print_angles():
     """
