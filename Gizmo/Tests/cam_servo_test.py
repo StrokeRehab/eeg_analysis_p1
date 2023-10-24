@@ -77,8 +77,8 @@ def cleanup_gpio():
 
 def reset_servos():
     print("\nResetting servo angles...")
-    move_pan(0)
-    move_tilt(0)
+    move_pan(90)
+    move_tilt(90)
 
 def print_new_line(line_count):
     """
